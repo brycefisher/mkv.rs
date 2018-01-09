@@ -25,25 +25,25 @@ fn main() {
         _ => panic!("Usage: dom_dumper [filename.mkv]")
     };
     let mut f = BufReader::new(reader);
-   
-    
+
+
     //let mut stdout = std::io::stdout();
     let element_logger = mkv::elements::parser::debug::DebugPrint::new(log::LogLevel::Info);
     let mut dom_builder : mkv::elements::builder::Builder = Default::default();
     {
         let mut m = mkv::elements::parser::new();
-        
+
         loop {
             let mut b = [0; BSIZE];
             match f.read(&mut b) {
                 Ok(x) => match x {
-                        0 => break,
-                        x => m.feed_bytes(b.split_at(x).0, &mut dom_builder),
-                    },
+                    0 => break,
+                    x => m.feed_bytes(b.split_at(x).0, &mut dom_builder),
+                },
                 Err(e) => { println!("error reading: {}", e); break; },
             }
         }
     }
-    
+
     println!("{:#?}", dom_builder.captured_elements());
 }
