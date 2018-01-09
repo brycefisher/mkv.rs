@@ -1,3 +1,9 @@
 language: rust
 rust:
   - stable
+
+script:
+  - cargo build --verbose
+  - cargo test --verbose
+  - curl -sSL -o /tmp/sample-video.webm https://bryce.fisher-fleig.org/videos/sample-video.webm
+  - cargo run --example dom_dumper -- /tmp/sample-video.webm
